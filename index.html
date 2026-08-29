@@ -3,115 +3,241 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>홍길동 - 자기소개</title>
+<title>점메추 룰렛 - 머니루틴</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
-    background: linear-gradient(135deg, #6a8dff 0%, #a06bff 100%);
+    font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+    background: linear-gradient(135deg, #FFF4E0 0%, #FFE8CC 100%);
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 24px;
   }
-  .card {
-    background: #fff;
-    border-radius: 20px;
-    max-width: 480px;
-    width: 100%;
-    padding: 40px 32px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+  h1 {
+    color: #D2691E;
+    font-size: 26px;
+    margin-bottom: 6px;
     text-align: center;
-    animation: fadeUp 0.6s ease;
   }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+  .subtitle {
+    color: #A0703C;
+    font-size: 14px;
+    margin-bottom: 24px;
+    text-align: center;
   }
-  .profile-img {
-    width: 120px;
-    height: 120px;
+  .wheel-wrap {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin-bottom: 28px;
+  }
+  .pointer {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-top: 24px solid #D2691E;
+    z-index: 10;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+  }
+  #wheel {
+    width: 300px;
+    height: 300px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #6a8dff, #a06bff);
-    margin: 0 auto 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 48px;
-    color: #fff;
+    border: 6px solid #fff;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    transition: transform 4.5s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+  }
+  #spinBtn {
+    background: #D2691E;
+    color: white;
+    border: none;
+    padding: 14px 40px;
+    font-size: 17px;
     font-weight: bold;
-  }
-  h1 { font-size: 26px; color: #222; margin-bottom: 4px; }
-  .role { color: #7a5cff; font-weight: 600; margin-bottom: 20px; }
-  .intro {
-    color: #555;
-    line-height: 1.7;
-    margin-bottom: 24px;
-    font-size: 15px;
-  }
-  .info-list {
-    text-align: left;
-    background: #f7f7fb;
-    border-radius: 12px;
-    padding: 16px 20px;
-    margin-bottom: 24px;
-  }
-  .info-list li {
-    list-style: none;
-    padding: 6px 0;
-    font-size: 14px;
-    color: #444;
-    display: flex;
-    gap: 8px;
-  }
-  .info-list li b { color: #6a5cff; min-width: 60px; }
-  .links {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  .links a {
-    display: inline-block;
-    padding: 10px 20px;
     border-radius: 30px;
-    background: #6a5cff;
-    color: #fff;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 600;
-    transition: transform 0.2s, background 0.2s;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(210,105,30,0.35);
+    transition: transform 0.15s;
   }
-  .links a:hover {
-    background: #4e3fdb;
-    transform: translateY(-2px);
+  #spinBtn:active { transform: scale(0.96); }
+  #spinBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .result {
+    margin-top: 22px;
+    min-height: 60px;
+    text-align: center;
   }
-  .links a.secondary {
-    background: #eee;
-    color: #444;
+  .result-text {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    opacity: 0;
+    transition: opacity 0.4s;
   }
-  .links a.secondary:hover { background: #ddd; }
+  .result-text.show { opacity: 1; }
+  .result-label {
+    font-size: 13px;
+    color: #999;
+    margin-bottom: 4px;
+  }
+  .footer {
+    margin-top: 30px;
+    font-size: 12px;
+    color: #BBA;
+  }
+  .edit-toggle {
+    margin-top: 16px;
+    font-size: 13px;
+    color: #A0703C;
+    text-decoration: underline;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+  .edit-panel {
+    display: none;
+    margin-top: 12px;
+    width: 100%;
+    max-width: 320px;
+  }
+  .edit-panel.open { display: block; }
+  .edit-panel textarea {
+    width: 100%;
+    height: 90px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 13px;
+    resize: vertical;
+  }
+  .edit-panel button {
+    margin-top: 8px;
+    background: #A0703C;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 16px;
+    font-size: 13px;
+    cursor: pointer;
+  }
 </style>
 </head>
 <body>
-  <div class="card">
-    <div class="profile-img">홍</div>
-    <h1>홍길동</h1>
-    <p class="role">개발자 · 블로거</p>
-    <p class="intro">
-      안녕하세요! 새로운 것을 배우고 만드는 것을 좋아하는 사람입니다.<br>
-      이 페이지는 저를 간단히 소개하는 공간이에요.
-    </p>
-    <ul class="info-list">
-      <li><b>이메일</b> example@email.com</li>
-      <li><b>지역</b> 부산, 대한민국</li>
-      <li><b>관심사</b> 웹 개발, 블로그, 자기계발</li>
-    </ul>
-    <div class="links">
-      <a href="#" target="_blank">블로그 방문</a>
-      <a href="#" class="secondary" target="_blank">GitHub</a>
-    </div>
-  </div>
+
+<h1>🍽️ 오늘 점심 뭐 먹지?</h1>
+<div class="subtitle">고민될 땐 룰렛에게 맡기세요 - 머니루틴</div>
+
+<div class="wheel-wrap">
+  <div class="pointer"></div>
+  <canvas id="wheel" width="300" height="300"></canvas>
+</div>
+
+<button id="spinBtn">룰렛 돌리기</button>
+
+<div class="result">
+  <div class="result-label" id="resultLabel"></div>
+  <div class="result-text" id="resultText"></div>
+</div>
+
+<button class="edit-toggle" id="editToggle">메뉴 목록 수정하기</button>
+<div class="edit-panel" id="editPanel">
+  <textarea id="menuInput">김치찌개, 된장찌개, 제육볶음, 돈까스, 냉면, 짜장면, 김밥, 라면, 초밥, 순두부찌개, 칼국수, 삼겹살</textarea>
+  <button id="applyMenu">적용하기</button>
+</div>
+
+<div class="footer">머니루틴 | blog.naver.com/sungmcast</div>
+
+<script>
+const colors = ['#FFB6A3','#FFD3A5','#FCF6BD','#D0F4DE','#A9DEF9','#E4C1F9','#F6BD60','#F5CAC3','#84A59D','#F28482','#F6E7CB','#B5EAD7'];
+let menus = ['김치찌개','된장찌개','제육볶음','돈까스','냉면','짜장면','김밥','라면','초밥','순두부찌개','칼국수','삼겹살'];
+let currentRotation = 0;
+let spinning = false;
+
+const canvas = document.getElementById('wheel');
+const ctx = canvas.getContext('2d');
+const radius = 150;
+
+function drawWheel() {
+  const sliceAngle = (2 * Math.PI) / menus.length;
+  ctx.clearRect(0, 0, 300, 300);
+  menus.forEach((menu, i) => {
+    const startAngle = i * sliceAngle;
+    const endAngle = startAngle + sliceAngle;
+
+    ctx.beginPath();
+    ctx.moveTo(radius, radius);
+    ctx.arc(radius, radius, radius, startAngle, endAngle);
+    ctx.closePath();
+    ctx.fillStyle = colors[i % colors.length];
+    ctx.fill();
+
+    ctx.save();
+    ctx.translate(radius, radius);
+    ctx.rotate(startAngle + sliceAngle / 2);
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#4a3222';
+    ctx.font = 'bold 14px sans-serif';
+    ctx.fillText(menu, radius - 14, 5);
+    ctx.restore();
+  });
+}
+
+function applyMenus(list) {
+  menus = list;
+  drawWheel();
+}
+
+drawWheel();
+
+document.getElementById('spinBtn').addEventListener('click', () => {
+  if (spinning) return;
+  spinning = true;
+  document.getElementById('spinBtn').disabled = true;
+  document.getElementById('resultText').classList.remove('show');
+  document.getElementById('resultLabel').textContent = '';
+
+  const sliceAngle = 360 / menus.length;
+  const randomExtra = Math.random() * 360;
+  const spins = 6; // full spins for effect
+  const totalRotation = currentRotation + spins * 360 + randomExtra;
+
+  canvas.style.transform = `rotate(${totalRotation}deg)`;
+  currentRotation = totalRotation % 360;
+
+  setTimeout(() => {
+    // pointer is at top (0deg from 12 o'clock); wheel rotated clockwise
+    const normalized = (360 - (currentRotation % 360)) % 360;
+    const index = Math.floor(normalized / sliceAngle) % menus.length;
+    document.getElementById('resultLabel').textContent = '오늘의 점심은...';
+    document.getElementById('resultText').textContent = '🎉 ' + menus[index] + ' 🎉';
+    document.getElementById('resultText').classList.add('show');
+    spinning = false;
+    document.getElementById('spinBtn').disabled = false;
+  }, 4600);
+});
+
+document.getElementById('editToggle').addEventListener('click', () => {
+  document.getElementById('editPanel').classList.toggle('open');
+});
+
+document.getElementById('applyMenu').addEventListener('click', () => {
+  const raw = document.getElementById('menuInput').value;
+  const list = raw.split(',').map(s => s.trim()).filter(Boolean);
+  if (list.length >= 2) {
+    applyMenus(list);
+    document.getElementById('resultText').classList.remove('show');
+  } else {
+    alert('메뉴는 2개 이상 입력해주세요.');
+  }
+});
+</script>
+
 </body>
 </html>
