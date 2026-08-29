@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>홍길동 - 자기소개</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+    background: linear-gradient(135deg, #6a8dff 0%, #a06bff 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .card {
+    background: #fff;
+    border-radius: 20px;
+    max-width: 480px;
+    width: 100%;
+    padding: 40px 32px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+    text-align: center;
+    animation: fadeUp 0.6s ease;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .profile-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6a8dff, #a06bff);
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    color: #fff;
+    font-weight: bold;
+  }
+  h1 { font-size: 26px; color: #222; margin-bottom: 4px; }
+  .role { color: #7a5cff; font-weight: 600; margin-bottom: 20px; }
+  .intro {
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 24px;
+    font-size: 15px;
+  }
+  .info-list {
+    text-align: left;
+    background: #f7f7fb;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+  }
+  .info-list li {
+    list-style: none;
+    padding: 6px 0;
+    font-size: 14px;
+    color: #444;
+    display: flex;
+    gap: 8px;
+  }
+  .info-list li b { color: #6a5cff; min-width: 60px; }
+  .links {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .links a {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 30px;
+    background: #6a5cff;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .links a:hover {
+    background: #4e3fdb;
+    transform: translateY(-2px);
+  }
+  .links a.secondary {
+    background: #eee;
+    color: #444;
+  }
+  .links a.secondary:hover { background: #ddd; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="profile-img">홍</div>
+    <h1>홍길동</h1>
+    <p class="role">개발자 · 블로거</p>
+    <p class="intro">
+      안녕하세요! 새로운 것을 배우고 만드는 것을 좋아하는 사람입니다.<br>
+      이 페이지는 저를 간단히 소개하는 공간이에요.
+    </p>
+    <ul class="info-list">
+      <li><b>이메일</b> example@email.com</li>
+      <li><b>지역</b> 부산, 대한민국</li>
+      <li><b>관심사</b> 웹 개발, 블로그, 자기계발</li>
+    </ul>
+    <div class="links">
+      <a href="#" target="_blank">블로그 방문</a>
+      <a href="#" class="secondary" target="_blank">GitHub</a>
+    </div>
+  </div>
+</body>
+</html>
